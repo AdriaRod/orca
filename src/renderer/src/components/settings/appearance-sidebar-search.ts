@@ -148,6 +148,42 @@ export const getShowWorkspaceBoardButtonEntry = createLocalizedCatalog((): Setti
   ]
 }))
 
+export const getShowWorkspaceStatusOnCardsEntry = createLocalizedCatalog(
+  (): SettingsSearchEntry => ({
+    title: translate(
+      'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.title',
+      'Show Workspace Status on Cards'
+    ),
+    description: translate(
+      'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.description',
+      'Mark each sidebar workspace card with the color of its Workspace Board status.'
+    ),
+    keywords: [
+      ...translateSearchKeyword(
+        'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.status',
+        'status'
+      ),
+      ...translateSearchKeyword(
+        'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.color',
+        'color'
+      ),
+      ...translateSearchKeyword(
+        'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.kanban',
+        'kanban'
+      ),
+      ...translateSearchKeyword(
+        'auto.components.settings.appearance.search.showWorkspaceStatusOnCards.board',
+        'board'
+      ),
+      ...translateSearchKeyword(
+        'auto.components.settings.appearance.search.workspaceCardLayout.workspaceCards',
+        'workspace cards'
+      ),
+      ...translateSearchKeyword('auto.components.settings.appearance.search.5bff6a2ef0', 'sidebar')
+    ]
+  })
+)
+
 export const getSidebarEntries = createLocalizedCatalog((): SettingsSearchEntry[] => [
   {
     title: translate('auto.components.settings.appearance.search.155a1e7438', 'Show Tasks Button'),
@@ -215,5 +251,6 @@ export const getSidebarEntries = createLocalizedCatalog((): SettingsSearchEntry[
   getShowWorkspaceBoardButtonEntry(),
   getWorkspaceCardLayoutEntry(),
   getLeftSidebarAppearanceEntry(),
-  getShowPinnedWorktreesInGroupsEntry()
+  getShowPinnedWorktreesInGroupsEntry(),
+  getShowWorkspaceStatusOnCardsEntry()
 ])

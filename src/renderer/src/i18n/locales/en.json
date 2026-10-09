@@ -7064,6 +7064,10 @@
           "showWorkspaceBoardButton": {
             "title": "Show Workspace Board Button",
             "description": "Show the Workspace Board shortcut in the sidebar. It remains available from the bottom toolbar."
+          },
+          "showWorkspaceStatusOnCards": {
+            "title": "Show Workspace Status on Cards",
+            "description": "Add a stripe in the Workspace Board status color to each workspace card."
           }
         },
         "AutoRenameBranchFromWorkSetting": {
@@ -9627,6 +9631,14 @@
               "description": "Show the Workspace Board button at the top of the left sidebar.",
               "board": "board",
               "kanban": "kanban"
+            },
+            "showWorkspaceStatusOnCards": {
+              "title": "Show Workspace Status on Cards",
+              "description": "Mark each sidebar workspace card with the color of its Workspace Board status.",
+              "status": "status",
+              "color": "color",
+              "kanban": "kanban",
+              "board": "board"
             }
           }
         },

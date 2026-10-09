@@ -6,6 +6,7 @@ import { AutoRenameFailedDialog } from './AutoRenameFailedDialog'
 import WorktreeContextMenu from './WorktreeContextMenu'
 import { useIsSleepingWorktree } from './use-worktree-sleep-state'
 import { WorktreeCardParentContent } from './worktree-card-parent-content'
+import { WorktreeCardWorkspaceStatusStripe } from './WorktreeCardWorkspaceStatusStripe'
 import { buildWorktreeCardPresentation } from './worktree-card-presentation'
 import type { WorktreeCardController } from './use-worktree-card-controller'
 
@@ -100,15 +101,17 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
           </div>
         </div>
       )}
-      {isSleeping && newCardStyle && !isDeleting ? (
-        // Why a token mix (see [data-worktree-sleeping-dim] in main.css), not opacity:
-        // opacity dims toward whatever is painted behind, so the step shrank on lighter
-        // surfaces and vanished on custom backgrounds (#19624). Scoped to the parent row
-        // so awake lineage children keep their own brightness.
-        <div data-worktree-sleeping-dim="">{parentCardContent}</div>
-      ) : (
-        parentCardContent
-      )}
+      <WorktreeCardWorkspaceStatusStripe worktree={worktree}>
+        {isSleeping && newCardStyle && !isDeleting ? (
+          // Why a token mix (see [data-worktree-sleeping-dim] in main.css), not opacity:
+          // opacity dims toward whatever is painted behind, so the step shrank on lighter
+          // surfaces and vanished on custom backgrounds (#19624). Scoped to the parent row
+          // so awake lineage children keep their own brightness.
+          <div data-worktree-sleeping-dim="">{parentCardContent}</div>
+        ) : (
+          parentCardContent
+        )}
+      </WorktreeCardWorkspaceStatusStripe>
 
       {newCardStyle && lineageChildren ? (
         <div
