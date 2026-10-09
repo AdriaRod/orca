@@ -385,6 +385,33 @@ describe('AppearancePane', () => {
     expect(updateSettings).toHaveBeenCalledWith({ showAutomationsButton: true })
   })
 
+  it('turns on workspace status stripes from the sidebar settings switch', async () => {
+    mocks.state.settingsSearchQuery = 'workspace status'
+    const updateSettings = vi.fn()
+    const container = await renderAppearancePane(getDefaultSettings('/tmp'), updateSettings)
+    const switchControl = container.querySelector<HTMLButtonElement>(
+      'button[role="switch"][aria-label="Show Workspace Status on Cards"]'
+    )
+
+    expect(switchControl).not.toBeNull()
+    expect(switchControl?.getAttribute('aria-checked')).toBe('false')
+
+    await act(async () => {
+      switchControl?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(updateSettings).toHaveBeenCalledWith({ showWorkspaceStatusOnCards: true })
+  })
+
+  it('finds the workspace status stripe switch from a kanban search', async () => {
+    mocks.state.settingsSearchQuery = 'kanban'
+    const container = await renderAppearancePane(getDefaultSettings('/tmp'), vi.fn())
+
+    expect(
+      container.querySelector('button[role="switch"][aria-label="Show Workspace Status on Cards"]')
+    ).not.toBeNull()
+  })
+
   it('changes workspace card layout from the Appearance sidebar controls', async () => {
     mocks.state.settingsSearchQuery = 'workspace card layout'
     const settings = {

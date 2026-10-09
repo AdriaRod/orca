@@ -27,6 +27,7 @@ import {
   getShowPinnedWorktreesInGroupsEntry,
   getWorkspaceCardLayoutEntry
 } from './appearance-sidebar-search'
+import { WorkspaceStatusOnCardsSetting } from './WorkspaceStatusOnCardsSetting'
 import { translate } from '@/i18n/i18n'
 import { matchesSettingsSearch, normalizeSettingsSearchQuery } from './settings-search'
 
@@ -338,6 +339,11 @@ export function AppearanceWindowSidebarSection({
                       }
                     />
                   </SearchableSetting>
+
+                  <WorkspaceStatusOnCardsSetting
+                    settings={settings}
+                    updateSettings={updateSettings}
+                  />
                 </div>
               </div>
             ) : null}

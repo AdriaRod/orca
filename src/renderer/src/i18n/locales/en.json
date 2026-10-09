@@ -7059,6 +7059,10 @@
           "showPinnedWorktreesInGroups": {
             "title": "Also show pinned worktrees in their original lists",
             "description": "Pinned worktrees stay in Pinned and also appear in All, Project, Status, and PR."
+          },
+          "showWorkspaceStatusOnCards": {
+            "title": "Show Workspace Status on Cards",
+            "description": "Add a stripe in the Workspace Board status color to each workspace card."
           }
         },
         "AutoRenameBranchFromWorkSetting": {
@@ -9616,6 +9620,14 @@
               "kw": {
                 "cursor": "cursor"
               }
+            },
+            "showWorkspaceStatusOnCards": {
+              "title": "Show Workspace Status on Cards",
+              "description": "Mark each sidebar workspace card with the color of its Workspace Board status.",
+              "status": "status",
+              "color": "color",
+              "kanban": "kanban",
+              "board": "board"
             }
           }
         },
