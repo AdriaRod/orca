@@ -5657,7 +5657,8 @@
           "fee535205b": "Tasks",
           "d599269755": "Hide from sidebar",
           "artifacts": "Artifacts",
-          "skills": "Skills"
+          "skills": "Skills",
+          "workspaceBoard": "Workspace Board"
         },
         "SidebarRepositoryFilterSection": {
           "d3a9c4cea1": "Clear",
@@ -7059,6 +7060,10 @@
           "showPinnedWorktreesInGroups": {
             "title": "Also show pinned worktrees in their original lists",
             "description": "Pinned worktrees stay in Pinned and also appear in All, Project, Status, and PR."
+          },
+          "showWorkspaceBoardButton": {
+            "title": "Show Workspace Board Button",
+            "description": "Show the Workspace Board shortcut in the sidebar. It remains available from the bottom toolbar."
           }
         },
         "AutoRenameBranchFromWorkSetting": {
@@ -9616,6 +9621,12 @@
               "kw": {
                 "cursor": "cursor"
               }
+            },
+            "showWorkspaceBoardButton": {
+              "title": "Show Workspace Board Button",
+              "description": "Show the Workspace Board button at the top of the left sidebar.",
+              "board": "board",
+              "kanban": "kanban"
             }
           }
         },

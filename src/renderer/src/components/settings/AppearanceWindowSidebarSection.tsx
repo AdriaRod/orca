@@ -27,6 +27,7 @@ import {
   getShowPinnedWorktreesInGroupsEntry,
   getWorkspaceCardLayoutEntry
 } from './appearance-sidebar-search'
+import { WorkspaceBoardButtonSetting } from './WorkspaceBoardButtonSetting'
 import { translate } from '@/i18n/i18n'
 import { matchesSettingsSearch, normalizeSettingsSearchQuery } from './settings-search'
 
@@ -311,6 +312,11 @@ export function AppearanceWindowSidebarSection({
                       }
                     />
                   </SearchableSetting>
+
+                  <WorkspaceBoardButtonSetting
+                    settings={settings}
+                    updateSettings={updateSettings}
+                  />
 
                   <SearchableSetting
                     title={getShowPinnedWorktreesInGroupsEntry().title}

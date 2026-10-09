@@ -1,5 +1,5 @@
 import React from 'react'
-import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
+import { BookOpen, CalendarClock, EyeOff, Files, Kanban, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store'
 import { cn } from '@/lib/utils'
@@ -40,6 +40,12 @@ export function shouldShowSkillsButton(
   return settings?.showSkillsButton === true
 }
 
+export function shouldShowWorkspaceBoardButton(
+  settings: Partial<Pick<GlobalSettings, 'showWorkspaceBoardButton'>> | null | undefined
+): boolean {
+  return settings?.showWorkspaceBoardButton === true
+}
+
 export function shouldShowAgentDashboardButton(
   settings: Partial<Pick<GlobalSettings, 'experimentalAgentDashboardPopout'>> | null | undefined
 ): boolean {
@@ -48,7 +54,15 @@ export function shouldShowAgentDashboardButton(
 
 const AgentDashboardSidebarEntry = lazyWithRetry(() => import('./AgentDashboardSidebarEntry'))
 
-const SidebarNav = React.memo(function SidebarNav() {
+type SidebarNavProps = {
+  workspaceBoardOpen?: boolean
+  onWorkspaceBoardToggle?: () => void
+}
+
+const SidebarNav = React.memo(function SidebarNav({
+  workspaceBoardOpen = false,
+  onWorkspaceBoardToggle
+}: SidebarNavProps) {
   // Why: this memo boundary needs its own language subscription, while
   // translate() preserves Orca's pseudo-localization behavior.
   useTranslation()
@@ -65,6 +79,7 @@ const SidebarNav = React.memo(function SidebarNav() {
   const showMobileButton = useAppStore((s) => shouldShowMobileButton(s.settings))
   const showArtifactsButton = useAppStore((s) => shouldShowArtifactsButton(s.settings))
   const showSkillsButton = useAppStore((s) => shouldShowSkillsButton(s.settings))
+  const showWorkspaceBoardButton = useAppStore((s) => shouldShowWorkspaceBoardButton(s.settings))
   const automationsActive = activeView === 'automations'
   const mobileActive = activeView === 'mobile'
   const artifactsActive = activeView === 'artifacts'
@@ -81,6 +96,9 @@ const SidebarNav = React.memo(function SidebarNav() {
   }, [updateSettings])
   const hideSkillsButton = React.useCallback(() => {
     void updateSettings({ showSkillsButton: false })
+  }, [updateSettings])
+  const hideWorkspaceBoardButton = React.useCallback(() => {
+    void updateSettings({ showWorkspaceBoardButton: false })
   }, [updateSettings])
 
   return (
@@ -204,6 +222,35 @@ const SidebarNav = React.memo(function SidebarNav() {
             </button>
           </ContextMenuTrigger>
           <HideSidebarMenu onHide={hideAutomationsButton} />
+        </ContextMenu>
+      ) : null}
+      {showWorkspaceBoardButton && onWorkspaceBoardToggle ? (
+        <ContextMenu>
+          <ContextMenuTrigger asChild>
+            <button
+              type="button"
+              onClick={onWorkspaceBoardToggle}
+              aria-pressed={workspaceBoardOpen}
+              className={cn(
+                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[13px] font-medium tracking-tight transition-colors',
+                workspaceBoardOpen
+                  ? 'bg-worktree-sidebar-accent text-worktree-sidebar-accent-foreground'
+                  : 'text-worktree-sidebar-foreground/60 hover:bg-worktree-sidebar-foreground/8'
+              )}
+            >
+              <Kanban
+                className={cn(
+                  'size-4 shrink-0',
+                  !workspaceBoardOpen && 'text-worktree-sidebar-foreground/30'
+                )}
+                strokeWidth={workspaceBoardOpen ? 2.25 : 1.75}
+              />
+              <span className="flex-1">
+                {translate('auto.components.sidebar.SidebarNav.workspaceBoard', 'Workspace Board')}
+              </span>
+            </button>
+          </ContextMenuTrigger>
+          <HideSidebarMenu onHide={hideWorkspaceBoardButton} />
         </ContextMenu>
       ) : null}
       {showAgentDashboardButton ? (

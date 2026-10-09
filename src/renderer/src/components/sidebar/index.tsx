@@ -168,7 +168,10 @@ function Sidebar({
         {sidebarOpen && (
           <>
             {/* Fixed controls */}
-            <SidebarNav />
+            <SidebarNav
+              workspaceBoardOpen={workspaceBoardOpen}
+              onWorkspaceBoardToggle={toggleWorkspaceBoard}
+            />
             <SidebarHeader
               onWorkspaceBoardMenuOpenChange={setWorkspaceBoardMenuOpen}
               activityOptionsTarget={setAgentOptionsTarget}

@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { act, type ReactNode } from 'react'
+import { act, type ComponentProps, type ReactNode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -90,7 +90,8 @@ vi.mock('@/components/ui/context-menu', () => ({
 import SidebarNav, {
   shouldShowAutomationsButton,
   shouldShowArtifactsButton,
-  shouldShowMobileButton
+  shouldShowMobileButton,
+  shouldShowWorkspaceBoardButton
 } from './SidebarNav'
 
 function gitRepo(): Repo {
@@ -150,7 +151,9 @@ function setSidebarState({
 
 const mountedRoots: Root[] = []
 
-async function renderSidebarNav(): Promise<HTMLDivElement> {
+async function renderSidebarNav(
+  props: ComponentProps<typeof SidebarNav> = {}
+): Promise<HTMLDivElement> {
   const container = document.createElement('div')
   document.body.appendChild(container)
   const root = createRoot(container)
@@ -158,7 +161,7 @@ async function renderSidebarNav(): Promise<HTMLDivElement> {
   await act(async () => {
     root.render(
       <TooltipProvider>
-        <SidebarNav />
+        <SidebarNav {...props} />
       </TooltipProvider>
     )
   })
@@ -297,6 +300,59 @@ describe('SidebarNav', () => {
     await clickButton(getHideButton(menu as Element))
 
     expect(mocks.updateSettings).toHaveBeenCalledWith({ showArtifactsButton: false })
+  })
+
+  it('hides the Workspace Board entry by default for older settings', () => {
+    expect(shouldShowWorkspaceBoardButton(null)).toBe(false)
+    expect(shouldShowWorkspaceBoardButton({})).toBe(false)
+    expect(shouldShowWorkspaceBoardButton({ showWorkspaceBoardButton: true })).toBe(true)
+    expect(shouldShowWorkspaceBoardButton({ showWorkspaceBoardButton: false })).toBe(false)
+  })
+
+  it('omits the Workspace Board row by default', async () => {
+    const container = await renderSidebarNav({ onWorkspaceBoardToggle: vi.fn() })
+
+    expect(queryButtonByText(container, 'Workspace Board')).toBeNull()
+  })
+
+  it('toggles the Workspace Board from the sidebar', async () => {
+    setSidebarState({
+      settings: { ...getDefaultSettings('/tmp'), showWorkspaceBoardButton: true }
+    })
+    const onWorkspaceBoardToggle = vi.fn()
+    const container = await renderSidebarNav({ onWorkspaceBoardToggle })
+
+    await clickButton(getButtonByText(container, 'Workspace Board'))
+
+    expect(onWorkspaceBoardToggle).toHaveBeenCalledOnce()
+  })
+
+  it('marks the Workspace Board row pressed while the board is open', async () => {
+    setSidebarState({
+      settings: { ...getDefaultSettings('/tmp'), showWorkspaceBoardButton: true }
+    })
+    const closed = await renderSidebarNav({ onWorkspaceBoardToggle: vi.fn() })
+    expect(getButtonByText(closed, 'Workspace Board').getAttribute('aria-pressed')).toBe('false')
+
+    const open = await renderSidebarNav({
+      workspaceBoardOpen: true,
+      onWorkspaceBoardToggle: vi.fn()
+    })
+    expect(getButtonByText(open, 'Workspace Board').getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('hides the Workspace Board from its context menu', async () => {
+    setSidebarState({
+      settings: { ...getDefaultSettings('/tmp'), showWorkspaceBoardButton: true }
+    })
+    const container = await renderSidebarNav({ onWorkspaceBoardToggle: vi.fn() })
+    const menu = getButtonByText(container, 'Workspace Board').closest(
+      '[data-testid="context-menu"]'
+    )
+
+    await clickButton(getHideButton(menu as Element))
+
+    expect(mocks.updateSettings).toHaveBeenCalledWith({ showWorkspaceBoardButton: false })
   })
 
   it('hides the Mobile entry when the sidebar setting is off', () => {
