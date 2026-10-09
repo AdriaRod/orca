@@ -22,7 +22,8 @@ export function WorktreeCardWorkspaceStatusStripe({
   const status = workspaceStatuses.find((candidate) => candidate.id === statusId) ?? statusId
 
   return (
-    <div className="relative">
+    // Why: card insets shrink to 2px in some layouts, so the stripe reserves its own gutter.
+    <div className="relative pl-2.5">
       <div
         aria-hidden="true"
         data-worktree-workspace-status-stripe={statusId}
